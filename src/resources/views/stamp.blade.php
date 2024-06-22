@@ -7,8 +7,8 @@
 @section('link')
 <nav class="header-nav">
     <ul class="header-nav__list">
-        <li class="header-nav__item"><a href="">ホーム</a></li>
-        <li class="header-nav__item"><a href="">日付一覧</a></li>
+        <li class="header-nav__item"><a href="/">ホーム</a></li>
+        <li class="header-nav__item"><a href="/attendance">日付一覧</a></li>
     </ul>
     <form action="/logout" method="post" class="logout">
         @csrf

@@ -103,4 +103,77 @@ class AtteController extends Controller
 
         return redirect('/')->with('message', '休憩終了しました');
     }
+
+    
+
+
+    public function getWorks(Request $request)
+    {
+        // 日付パラメータを処理
+        if (is_null($request->date)) {
+            $yesterday = Carbon::yesterday();
+            $today = Carbon::today();
+            $tomorrow = Carbon::tomorrow();
+        } else {
+            $today = new Carbon($request->date);
+            $yesterday = (new Carbon($request->date))->subDay();
+            $tomorrow = (new Carbon($request->date))->addDay();
+        }
+        // $prevOrNext = $request->changeDay;
+
+        $resultArray[] = array();
+        $i = 0;
+
+        $workTodayAll = Work::where('date', $today->format('Y-m-d'))->get();
+
+        // 今日の勤務データを取得
+        $works = Work::with(['user', 'rests'])
+        ->where('date', $today->format('Y-m-d'))
+        ->get();
+
+        $resultArray = [];
+
+        foreach ($works as $work) {
+            // 勤務開始時間と終了時間を Carbon オブジェクトに変換
+            $workStart = Carbon::parse($work->start);
+            $workEnd = $work->end ? Carbon::parse($work->end) : null;
+
+            // 休憩時間の計算
+            $totalRestSeconds = $work->rests->reduce(function ($carry, $rest) {
+                if ($rest->start && $rest->end) {
+                    $carry += Carbon::parse($rest->end)->diffInSeconds(Carbon::parse($rest->start));
+                }
+                return $carry;
+            }, 0);
+
+            $totalRestTime = gmdate('H:i:s', $totalRestSeconds); // 秒から時間フォーマットに変換
+
+            // 勤務時間の計算
+            $totalWorkSeconds = $workEnd ? $workEnd->diffInSeconds($workStart) : 0;
+            $totalWorkSecondsWithoutRest = $totalWorkSeconds - $totalRestSeconds;
+            $totalWorkTime = gmdate('H:i:s', $totalWorkSecondsWithoutRest);
+
+            // 結果配列に追加
+            $resultArray[] = [
+                'user_name' => $work->user->name ?? '不明',
+                'start' => $workStart->format('H:i:s'),
+                'end' => $workEnd ? $workEnd->format('H:i:s') : '未設定',
+                'total_rest' => $totalRestTime,
+                'total_work' => $totalWorkTime,
+            ];
+        }
+        
+        
+
+
+        return view('date')->with([
+            'today' => $today,
+            'yesterday' => $yesterday,
+            'tomorrow' => $tomorrow,
+            'resultArray' => $resultArray,
+            
+        ]);
+    
+    }
+
 }

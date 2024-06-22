@@ -17,6 +17,7 @@ use App\Http\Controllers\AtteController;
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [AtteController::class, 'index']);
+    
 });
 
 Route::group(['middleware' => 'auth'], function() {
@@ -25,4 +26,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/startrest', [AtteController::class, 'startRest'])->name('startrest');
     Route::post('/endrest', [AtteController::class, 'endRest'])->name('endrest');
 });
+
+Route::get('/attendance', [AtteController::class, 'getWorks']);
+Route::get('/attendance/{num}', [AtteController::class, 'getWorks']);
 
