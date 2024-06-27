@@ -1,24 +1,30 @@
+.date__content {
+    margin: 0 auto;
+    padding: 30px 15px;
+    width: 100%;
+}
+
 .date {
     display: flex;
     justify-content: center;
-    margin: 25px 0 50px;
+    padding-top: 20px;
 }
 
-.date form .before,.after {
-    width: 40px;
-    height: 25px;
+.date form .before,
+.after {
+    width: 45px;
     border-color: #0c7ce4;
     font-size: 20px;
     color: #0c7ce4;
     background-color: #fff;
 }
 
-.date form .before:hover{
+.date form .before:hover {
     color: #fff;
     background-color: #0c7ce4;
 }
 
-.date form .after:hover{
+.date form .after:hover {
     color: #fff;
     background-color: #0c7ce4;
 }
@@ -26,4 +32,39 @@
 .date__today {
     font-size: x-large;
     margin: 0 40px;
+}
+
+.date__content-table {
+    width: 100%;
+    height: 80%;
+    padding-top: 45px;
+}
+
+.date__table {
+    margin: 0 auto;
+}
+
+.title__row {
+    white-space: nowrap;
+    padding: 0 100px 0 50px;
+    line-height: 50px;
+    border-top: 1px solid #464545;
+    font-size: 23px;
+}
+
+.table__label {
+    white-space: nowrap;
+    padding: 15px 100px 15px 60px;
+}
+
+.value__row {
+    padding: 10 0 10 50;
+    border-top: 1px solid #464545;
+    line-height: 50px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.value__list {
+    padding: 15px 100px 15px 60px;
 }

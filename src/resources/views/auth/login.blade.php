@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/login.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/auth/login.css') }}" />
 @endsection
 
 @section('content')
@@ -40,11 +40,14 @@
 
         </form>
 
-        <p class="message">アカウントをお持ちでない方はこちらから
-        <br>
-        <a href="/register" class="message__link">会員登録</a>
-        </br>
-        </p>
+        <div class="login__content-footer">
+            <span class="login__content-message">アカウントをお持ちでない方はこちらから</span>
+            <br>
+            <a class="login__content-link" href="/register">会員登録</a>
+        </div>
+        
+
+        
     </div>
 </div>
 @endsection

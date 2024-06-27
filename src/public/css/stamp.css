@@ -1,0 +1,38 @@
+.stamp__content {
+    margin: 0 auto;
+    padding: 30px 15px;
+    max-width: 1230px;
+    padding-bottom: 105px;
+}
+
+.stamp__content-ttl {
+    font-weight: bold;
+    text-align: center;
+    font-size: 25px;
+}
+
+.work__form {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.rest__form {
+    display: flex;
+    justify-content: center;
+}
+
+.work__form-end,
+.rest__form-end {
+    margin-left: 50px;
+}
+
+.stamp-form button {
+    padding: 90px 200px;
+    font-weight: bold;
+    font-size: 25px;
+    margin-bottom: 40px;
+    border: none;
+    background-color: #fff;
+    border-radius: 5px;
+}

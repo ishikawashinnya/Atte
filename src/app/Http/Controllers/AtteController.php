@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Work;
 use App\Models\Rest;
 use Illuminate\Http\Request;
+
 
 class AtteController extends Controller
 {
@@ -129,7 +131,7 @@ class AtteController extends Controller
         // 今日の勤務データを取得
         $works = Work::with(['user', 'rests'])
         ->where('date', $today->format('Y-m-d'))
-        ->get();
+        ->paginate(5);
 
         $resultArray = [];
 
@@ -163,7 +165,6 @@ class AtteController extends Controller
             ];
         }
         
-        
 
 
         return view('date')->with([
@@ -171,6 +172,7 @@ class AtteController extends Controller
             'yesterday' => $yesterday,
             'tomorrow' => $tomorrow,
             'resultArray' => $resultArray,
+            'works' => $works,
             
         ]);
     

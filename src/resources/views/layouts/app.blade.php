@@ -8,31 +8,50 @@
     <link rel="stylesheet" href="{{ asset('css/sanitize.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/common.css') }}" />
     @yield('css')
+
 </head>
 
 <body>
-    <div class="app">
-        <header class="header">
-            <div class="header__ttl">
-                <h1>Atte</h1>
-            </div>
-            @yield('link')
-        </header>
-
-        <main>
-            <div class="content">
-                @yield('content')
-            </div>
-        </main>
-
-        <footer class="footer">
-            <div class="footer__ttl">
-                <span class="footer__ttl-span">Atte,inc.</span>
-            </div>
-        </footer>
-    </div>
-
     
+    <header class="header">
+        <div class="header__ttl">
+            <h1>Atte</h1>
+        </div>
+        @if(Auth::check())
+        <nav class="header-nav">
+            <ul class="header-nav__list">
+                <li class="header-nav__item">
+                    <a href="/">ホーム</a>
+                </li>
+                <li class="header-nav__item">
+                    <a href="/attendance">日付一覧</a>
+                </li>
+                <li class="header-nav__item">
+                    <form action="/logout" method="post" class="logout">
+                        @csrf
+                        <button class="nav__logout">ログアウト</button>
+                    </form>
+                </li>
+            </ul> 
+        </nav>
+        @endif
+        @yield('link')
+    </header>
+
+    <main>
+        <div class="content">
+            @yield('content')
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__ttl">
+            <span class="footer__ttl-span">Atte,inc.</span>
+        </div>
+    </footer>
+    
+
+   
 </body>
 
 </html>

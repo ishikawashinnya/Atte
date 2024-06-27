@@ -1,0 +1,45 @@
+.pagination__wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.pagination__text {
+    display: inline-block;
+}
+
+.pagination__nav {
+    display: flex;
+    padding: 0;
+}
+
+.pagination__list {
+    list-style: none;
+    text-decoration: none;
+    border: 1px solid gainsboro;
+    padding: 8px 15px;
+    background-color: #fff;
+}
+
+.pagination__list:first-child {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.pagination__list:last-child {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+
+.pagination__item {
+    text-decoration: none;
+    color: #2384cf;
+}
+
+.active {
+    color: white;
+    background-color: #2384cf;
+    border: 1px solid #2384cf;
+}
