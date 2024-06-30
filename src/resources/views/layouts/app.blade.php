@@ -17,23 +17,23 @@
         <div class="header__ttl">
             <h1>Atte</h1>
         </div>
-        @if(Auth::check())
-        <nav class="header-nav">
-            <ul class="header-nav__list">
-                <li class="header-nav__item">
-                    <a href="/">ホーム</a>
-                </li>
-                <li class="header-nav__item">
-                    <a href="/attendance">日付一覧</a>
-                </li>
-                <li class="header-nav__item">
-                    <form action="/logout" method="post" class="logout">
-                        @csrf
-                        <button class="nav__logout">ログアウト</button>
-                    </form>
-                </li>
-            </ul> 
-        </nav>
+        @if(Auth::check() && Auth::user()->email_verified_at)
+            <nav class="header-nav">
+                <ul class="header-nav__list">
+                    <li class="header-nav__item">
+                        <a href="/">ホーム</a>
+                    </li>
+                    <li class="header-nav__item">
+                        <a href="/attendance">日付一覧</a>
+                    </li>
+                    <li class="header-nav__item">
+                        <form action="/logout" method="post" class="logout">
+                            @csrf
+                            <button class="nav__logout">ログアウト</button>
+                        </form>
+                    </li>
+                </ul> 
+            </nav>
         @endif
         @yield('link')
     </header>
