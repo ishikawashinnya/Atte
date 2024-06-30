@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AtteController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 
 
 /*
@@ -15,10 +17,10 @@ use App\Http\Controllers\AtteController;
 |
 */
 
-Route::middleware('auth')->group(function () {
-    Route::get('/', [AtteController::class, 'index']);
-    
-});
+Route::get('/', function () {
+    return view('stamp');
+})->middleware(['auth', 'verified']);
+
 
 Route::group(['middleware' => 'auth'], function() {
     Route::post('/startwork', [AtteController::class, 'startWork'])->name('startwork');
