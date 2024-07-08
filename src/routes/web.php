@@ -32,3 +32,6 @@ Route::group(['middleware' => 'auth'], function() {
 Route::get('/attendance', [AtteController::class, 'getWorks']);
 Route::get('/attendance/{num}', [AtteController::class, 'getWorks']);
 
+Route::get('/userlist', [AtteController::class, 'getUsers']);
+Route::get('/userpage', [AtteController::class, 'userWorks'])->name('user.page');
+
