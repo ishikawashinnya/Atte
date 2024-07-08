@@ -1,45 +1,22 @@
-.date__content {
+.user-list__content {
     margin: 0 auto;
     padding: 30px 15px;
     width: 100%;
 }
 
-.date {
-    display: flex;
-    justify-content: center;
-    padding-top: 20px;
+.user-list__ttl {
+    font-weight: bold;
+    text-align: center;
+    font-size: 18px;
 }
 
-.date form .before,
-.after {
-    width: 45px;
-    border-color: #0c7ce4;
-    font-size: 20px;
-    color: #0c7ce4;
-    background-color: #fff;
-}
-
-.date form .before:hover {
-    color: #fff;
-    background-color: #0c7ce4;
-}
-
-.date form .after:hover {
-    color: #fff;
-    background-color: #0c7ce4;
-}
-
-.date__today {
-    font-size: x-large;
-    margin: 0 40px;
-}
-
-.date__content-table {
+.user-list {
     width: 100%;
-    padding-top: 45px;
+    padding-top: 20px;
+    display: flex;
 }
 
-.date__table {
+.user-list__table {
     margin: 0 auto;
 }
 
@@ -66,4 +43,8 @@
 
 .value__list {
     padding: 15px 100px 15px 60px;
+}
+
+.link__button {
+    text-decoration: none;
 }

@@ -4,9 +4,6 @@
 <link rel="stylesheet" href="{{ asset('css/stamp.css') }}" />
 @endsection
 
-@section('link')
-@endsection
-
 @section('content')
 <div class="stamp__content">
     <div class="stamp__content-ttl">
@@ -14,6 +11,20 @@
         <p class="message">{{ \Auth::user()->name }}さんお疲れ様です！</p>
         @endif
     </div>
+    <!-- <div class="form__alert">
+        @if(session('message'))
+        <div class="alert__success">
+           <p class="alert__message">{{ session('message')}}</p> 
+        </div>
+        @endif
+    </div>
+    <div class="form__alert">
+        @if(session('error'))
+        <div class="alert__danger">
+            <p class="alert__message">{{ session('error') }}</p>
+        </div>
+        @endif
+    </div> -->
     
     <div class="work__form">
         <div class="work__form-start">

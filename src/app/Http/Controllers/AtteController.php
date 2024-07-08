@@ -148,7 +148,8 @@ class AtteController extends Controller
                 return $carry;
             }, 0);
 
-            $totalRestTime = gmdate('H:i:s', $totalRestSeconds); // 秒から時間フォーマットに変換
+            // 秒から時間フォーマットに変換
+            $totalRestTime = gmdate('H:i:s', $totalRestSeconds); 
 
             // 勤務時間の計算
             $totalWorkSeconds = $workEnd ? $workEnd->diffInSeconds($workStart) : 0;
@@ -178,4 +179,64 @@ class AtteController extends Controller
     
     }
 
+    public function getUsers()
+    {
+        $users = User::paginate(5);
+
+        return view('user-list', compact('users'));
+    }
+
+    public function userWorks (Request $request)
+    {
+        // ユーザーIDをクエリパラメータから取得
+        $userId = $request->query('id');
+        $user = User::findOrFail($userId);
+
+        // 勤怠情報を取得
+        $works = Work::with(['user', 'rests'])
+            ->where('user_id', $userId)
+            ->orderBy('date', 'desc') // 最新のものから表示するために日付で降順にソート 
+            ->paginate(5); // 5件ずつページネーションする
+
+        $resultArray = [];
+
+        foreach ($works as $work) {
+            // 勤務開始時間と終了時間を Carbon オブジェクトに変換
+            $workStart = Carbon::parse($work->start);
+            $workEnd = $work->end ? Carbon::parse($work->end) : null;
+
+            // 休憩時間の計算
+            $totalRestSeconds = $work->rests->reduce(function ($carry, $rest) {
+                if ($rest->start && $rest->end) {
+                    $carry += Carbon::parse($rest->end)->diffInSeconds(Carbon::parse($rest->start));
+                }
+                return $carry;
+            }, 0);
+
+            // 秒から時間フォーマットに変換
+            $totalRestTime = gmdate('H:i:s', $totalRestSeconds); 
+
+            // 勤務時間の計算
+            $totalWorkSeconds = $workEnd ? $workEnd->diffInSeconds($workStart) : 0;
+            $totalWorkSecondsWithoutRest = $totalWorkSeconds - $totalRestSeconds;
+            $totalWorkTime = gmdate('H:i:s', $totalWorkSecondsWithoutRest);
+
+            // 結果配列に追加
+            $resultArray[] = [
+                'date' => $work->date,
+                'start' => $workStart->format('H:i:s'),
+                'end' => $workEnd ? $workEnd->format('H:i:s') : '未設定',
+                'total_rest' => $totalRestTime,
+                'total_work' => $totalWorkTime,
+            ];
+        }
+
+        return view('user-page')->with([
+            'user' => $user,
+            'resultArray' => $resultArray,
+            'works' => $works,
+        ]);
+    }
+  
+    
 }

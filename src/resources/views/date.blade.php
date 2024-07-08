@@ -4,9 +4,6 @@
     <link rel="stylesheet" href="{{ asset('css/date.css') }}" />
 @endsection
 
-@section('link')
-
-@endsection
 
 @section('content')
 <div class="date__content">
