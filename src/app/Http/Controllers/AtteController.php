@@ -13,35 +13,48 @@ use Illuminate\Http\Request;
 
 class AtteController extends Controller
 {
+
+    
     public function index()
     {
-        $now_date = Carbon::now()->format('Y-m-d');
-        $user_id = Auth::user()->id;
+        $user = Auth::user();
+
+        
         return view('stamp');
+
     }
+
+    
 
     public function startWork()
     {
         $user = Auth::user();
+        $today = Carbon::today();
+        $now = Carbon::now();
 
-        $oldWork = Work::where('user_id', $user->id)->latest()->first();
+        // 直近の勤務データを取得
+        $latestWork = Work::where('user_id', $user->id)->latest()->first();
 
-        $oldWorkDay = null;
-        if($oldWork) {
-            $oldWorkStart = new Carbon($oldWork->start);
-            $oldWorkDay = $oldWorkStart->startOfDay();
+        // 前日の勤務があるかどうかを確認し、日付が変わっていて退勤が打刻されていない場合は更新する
+        if ($latestWork && empty($latestWork->end)) {
+            $latestWorkDay = Carbon::parse($latestWork->start)->startOfDay();
+
+            // 日付が変わっているかどうかを確認
+            if ($latestWorkDay != $today) {
+                // 前日の勤務の end を null に更新
+                $latestWork->update(['end' => null]);
+            } else {
+                // 同じ日で退勤が打刻されていない場合はエラーメッセージを返して終了
+                return redirect('/')->with('error', 'すでに出勤済みです');
+            }
         }
 
-        $newWorkDay = Carbon::today();
-
-        if(($oldWorkDay == $newWorkDay) && (empty($oldWork->end))){
-            return redirect('/')->with('error', 'すでに出勤打刻されています');
-        }
-
+        // 新しい勤務を開始
         $work = Work::create([
             'user_id' => $user->id,
-            'start' => Carbon::now(),
-            'date' => Carbon::today(),
+            'start' => $now,
+            'end' => null, 
+            'date' => $today,
         ]);
 
         return redirect('/')->with('message', '出勤打刻が完了しました');
@@ -55,12 +68,23 @@ class AtteController extends Controller
         if( !empty($work->end)) {
             return redirect('/')->with('error', 'すでに退勤打刻済みか、出勤打刻がされていません');
         }
+
+        // 休憩中のチェック
+        $rest = Rest::where('work_id', $work->id)->latest()->first();
+            if ($rest && $rest->end === null) {
+            return redirect('/')->with('error', '休憩中のため、退勤打刻ができません');
+        }
+
         $work->update([
             'end' => Carbon::now()
         ]);
 
         return redirect('/')->with('message', '退勤打刻が完了しました');
     }
+
+
+
+    
 
     public function startRest()
     {

@@ -27,11 +27,11 @@
     </div> -->
     
     <div class="work__form">
-        <div class="work__form-start">
-            <form action="/startwork" method="post" class="stamp-form"> 
-                @csrf
-                <button type="submit" class="stamp__btn">勤務開始</button>
-            </form>  
+        <div class="work__form-start">    
+                <form action="/startwork" method="post" class="stamp-form"> 
+                    @csrf
+                    <button type="submit" class="stamp__btn">勤務開始</button>
+                </form> 
         </div>
         <div class="work__form-end">
             <form action="/endwork" method="post" class="stamp-form">
@@ -40,7 +40,7 @@
             </form>
         </div>
     </div>
-    <dev class="rest__form">
+    <div class="rest__form">
         <div class="rest__form-start">
             <form action="/startrest" method="post" class="stamp-form">
                 @csrf
@@ -53,10 +53,11 @@
                 <button type="submit" class="stamp__btn">休憩終了</button>
             </form>
         </div>
-    </dev>
+    </div>
     
         
     
     
 </div>
+
 @endsection
