@@ -23,7 +23,7 @@ class AtteController extends Controller
             $oldWorkDay = new Carbon($oldWork->date);
             $today = Carbon::today();
 
-            return ($oldWorkDay->eq($today)) && ($oldWork->start !== null) && ($oldWork->end === null);
+            return ($oldWorkDay == $today) && ((!$oldWork->end));
         } else {
             return false;
         }
@@ -125,10 +125,7 @@ class AtteController extends Controller
             if ($latestWorkDay != $today) {
                 // 前日の勤務の end を null に更新
                 $latestWork->update(['end' => null]);
-            } else {
-                // 同じ日で退勤が打刻されていない場合はエラーメッセージを返して終了
-                return redirect('/')->with('error', 'すでに出勤済みです');
-            }
+            } 
         }
 
         // 新しい勤務を開始
@@ -154,7 +151,9 @@ class AtteController extends Controller
         // 休憩中のチェック
         $rest = Rest::where('work_id', $work->id)->latest()->first();
             if ($rest && $rest->end === null) {
-            return redirect('/')->with('error', '休憩中のため、退勤打刻ができません');
+            $rest->update([
+            'end' => Carbon::now()
+        ]);
         }
 
         $work->update([
