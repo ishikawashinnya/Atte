@@ -13,16 +13,98 @@ use Illuminate\Http\Request;
 
 class AtteController extends Controller
 {
+    //「勤務開始」判定
+    private function didWorkStart($user)
+    {
+
+        $oldWork = Work::where('user_id', $user->id)->latest()->first();
+
+        if ($oldWork) {
+            $oldWorkDay = new Carbon($oldWork->date);
+            $today = Carbon::today();
+
+            return ($oldWorkDay->eq($today)) && ($oldWork->start !== null) && ($oldWork->end === null);
+        } else {
+            return false;
+        }
+    }
+
+    //「勤務終了」判定
+    private function didWorkEnd()
+    {
+        $user = Auth::user();
+        $oldWork = Work::where('user_id', $user->id)->latest()->first();
+        $oldDay = '';
+
+        if ($oldWork) {
+            $oldDay = new Carbon($oldWork->date);
+        }
+
+        $today = Carbon::today();
+        //休憩を最低1度以上「開始」と「終了」を両方選択している
+        return ($oldDay == $today);
+    }
+
+    //「休憩中」判定
+    private function didRestStart()
+    {
+        $user = Auth::user();
+        $oldRest = '';
+        $oldDay = '';
+
+        if (Work::where('user_id', $user->id)->exists()) {
+            $work = Work::where('user_id', $user->id)->latest()->first();
+
+            if (Rest::where('work_id', $work->id)->exists()) {
+                $oldRest = Rest::where('work_id', $work->id)->latest()->first();
+            }
+
+            if ($oldRest) {
+                $oldRestStartTime = new Carbon($oldRest->start);
+                $oldDay = $oldRestStartTime->startOfday();
+            }
+
+            $today = Carbon::today();
+
+            //restsテーブルの最新のレコードが今日のデータ、かつ休憩終了がない（レコードがあるということは勤務開始＆休憩開始されている）
+            return ($oldDay == $today) && (!$oldRest->end);
+        }
+    }
 
     
     public function index()
     {
-        $user = Auth::user();
+        if (Auth::check()) {
+            $user = Auth::user();
+            $oldWork = Work::where('user_id', $user->id)->latest()->first();
+            if ($oldWork) {
+
+                $isWorkStarted = $this->didWorkStart($user);
+                $isWorkEnded = $this->didWorkEnd();
+                $isRestStarted = $this->didRestStart();
+            } else {
+                $isWorkStarted = false;
+                $isWorkEnded = false;
+                $isRestStarted = false;
+            }
+
+            $param = [
+                'user' => $user,
+                'isWorkStarted' => $isWorkStarted,
+                'isWorkEnded' => $isWorkEnded,
+                'isRestStarted' => $isRestStarted,
+            ];
+            return view('/stamp', $param);
+        } else {
+            return redirect('/login');
+        }
+    }
+
+
 
         
-        return view('stamp');
 
-    }
+    
 
     
 

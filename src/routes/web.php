@@ -17,9 +17,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/', function () {
-    return view('stamp');
-})->middleware(['auth', 'verified']);
+Route::get('/', [AtteController::class, 'index'])->middleware(['auth', 'verified']);
 
 
 Route::group(['middleware' => 'auth'], function() {
