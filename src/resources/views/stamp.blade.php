@@ -51,8 +51,8 @@
                 @csrf
                 <button type="submit" class="stamp__btn">勤務終了</button>
             </form>
-            @elseif($isWorkStarted && $isWorkEnded)
-             <form action="/endwork" method="post" class="stamp-form">
+            @elseif($isRestStarted)
+            <form action="/endwork" method="post" class="stamp-form">
                 @csrf
                 <button disabled style="color:gray">勤務終了</button>
             </form>
