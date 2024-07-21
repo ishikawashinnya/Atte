@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AtteController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 
 /*
@@ -17,6 +19,13 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
+Route::post('/register', [RegisteredUserController::class, 'store']);
+
+Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+
+
 Route::get('/', [AtteController::class, 'index'])->middleware(['auth', 'verified']);
 
 
@@ -27,8 +36,10 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/endrest', [AtteController::class, 'endRest'])->name('endrest');
 });
 
+
 Route::get('/attendance', [AtteController::class, 'getWorks']);
 Route::get('/attendance/{num}', [AtteController::class, 'getWorks']);
+
 
 Route::get('/userlist', [AtteController::class, 'getUsers']);
 Route::get('/userpage', [AtteController::class, 'userWorks'])->name('user.page');
