@@ -55,7 +55,9 @@ Dockerビルド
   
   2.DockerDesktopアプリを立ち上げる
 
-  3.docker-compose up -d --build
+  3.コンテナをビルドして起動
+  
+    docker-compose up -d --build
 
 Laravel環境構築
   1.docker-compose exec php bash
