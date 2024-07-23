@@ -49,7 +49,9 @@ http://ec2-18-183-180-238.ap-northeast-1.compute.amazonaws.com/login
 ## 環境構築
 Dockerビルド
 
-  1.git clone git@github.com:ishikawashinnya/Atte.git
+  1.クローン作成
+  
+    git clone git@github.com:ishikawashinnya/Atte.git
   
   2.DockerDesktopアプリを立ち上げる
 
