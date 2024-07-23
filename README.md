@@ -83,7 +83,7 @@ Laravel環境構築
   
     php artisan migrate
 
-## 開発環境
+## URL
 
   ・開発環境：http://localhost/
 
