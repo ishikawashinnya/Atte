@@ -72,7 +72,7 @@
                 @csrf
                 <button disabled style="color:gray">休憩開始</button>
             </form>
-             @elseif($isWorkStarted)
+            @elseif($isWorkStarted)
             <form action="/startrest" method="post" class="stamp-form">
                 @csrf
                 <button type="submit" class="stamp__btn">休憩開始</button>
@@ -86,7 +86,7 @@
         </div>
         <!-- 休憩終了 -->
         <div class="rest__form-end">
-             @if(($isWorkStarted) && ($isRestStarted))
+            @if(($isWorkStarted) && ($isRestStarted))
             <form action="/endrest" method="post" class="stamp-form">
                 @csrf
                 <button type="submit" class="stamp__btn">休憩終了</button>
@@ -99,10 +99,7 @@
             @endif
         </div>
     </div>
-    
-        
-    
-    
+
 </div>
 
 @endsection
