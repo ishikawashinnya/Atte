@@ -7,9 +7,7 @@
 Laravel学習のまとめとして作成。
 
 ## アプリケーションURL
-http://ec2-18-183-180-238.ap-northeast-1.compute.amazonaws.com/login
-
-※新規登録時メールによる本人確認あり
+デプロイしていない為、なし。
 
 ## 他のリポジトリ
 無し
