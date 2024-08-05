@@ -17,12 +17,15 @@ class AtteController extends Controller
     private function didWorkStart($user)
     {
 
+        // ユーザーの最新の勤務レコードを取得
         $oldWork = Work::where('user_id', $user->id)->latest()->first();
 
+        // 勤務レコードの日付が今日の日付と一致するかどうかをチェック
         if ($oldWork) {
             $oldWorkDay = new Carbon($oldWork->date);
             $today = Carbon::today();
 
+            // endが空かチェック
             return ($oldWorkDay == $today) && ((!$oldWork->end));
         } else {
             return false;
@@ -74,15 +77,21 @@ class AtteController extends Controller
     
     public function index()
     {
+        // ユーザーが認証されているかどうかをチェック
         if (Auth::check()) {
+            // 現在のユーザーを取得
             $user = Auth::user();
+            // ユーザーの最新の勤務データを取得
             $oldWork = Work::where('user_id', $user->id)->latest()->first();
-            if ($oldWork) {
 
+            // 勤務データが存在するかどうかをチェック
+            if ($oldWork) {
+                // 勤務データがある場合、勤務の開始、終了、休憩の開始をチェック
                 $isWorkStarted = $this->didWorkStart($user);
                 $isWorkEnded = $this->didWorkEnd();
                 $isRestStarted = $this->didRestStart();
             } else {
+                // 勤務データがない場合、すべてのステータスを false に設定
                 $isWorkStarted = false;
                 $isWorkEnded = false;
                 $isRestStarted = false;
@@ -288,7 +297,7 @@ class AtteController extends Controller
     {
         $users = User::paginate(5);
 
-        return view('user-list', compact('users'));
+        return view('user_list', compact('users'));
     }
 
     public function userWorks (Request $request)
@@ -336,7 +345,7 @@ class AtteController extends Controller
             ];
         }
 
-        return view('user-page')->with([
+        return view('user_page')->with([
             'user' => $user,
             'resultArray' => $resultArray,
             'works' => $works,
